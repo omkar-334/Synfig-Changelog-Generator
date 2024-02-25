@@ -6,6 +6,8 @@ from git import Repo
 from github import Github
 
 
+# I have used GitPython for local repositories and PyGithub for remote repositories.
+
 # Direct Commit - the previous commit becomes the parent of the new commit. Hence the new commit has only 1 parent.
 # Merged Commit - the new commit has previous merged commits(2 or more) as parents
 
