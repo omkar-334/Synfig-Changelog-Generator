@@ -4,6 +4,9 @@ from git import Repo
 from github import Github
 
 
+# Direct Commit - the previous commit becomes the parent of the new commit. Hence the new commit has only 1 parent.
+# Merged Commit - the new commit has previous merged commits(2 or more) as parents
+
 token = open('token.txt','r').read()
 github = Github(token)
 
@@ -24,8 +27,8 @@ def merge_extractor(repo_path : str, remote=True):
     if remote:
         repo = github.get_repo(repo_path)
         output = []
-        commits = repo.get_commits()
-        merges = [i for i in commits[:500] if 'merge' in i.commit.message.lower()]
+        commits = repo.get_commits()[:100]
+        merges = [i for i in commits if 'merge' in i.commit.message.lower()]
         merge_list = [[i.sha, i.commit.author.name, i.commit.author.date, i.commit.message] for i in merges]
 
     else:
@@ -37,6 +40,30 @@ def merge_extractor(repo_path : str, remote=True):
 
     return merge_list
 
-output = merge_extractor(local_path, remote=False)
-print(output)
+#To filter for direct commits, we need to check if the commit has only 1 parent.
+
+def direct_extractor(repo_path : str, remote=True):
+    """
+    Args:
+        repo_path (str): Path of the repository
+        remote (bool): True if remote repository, False for local
+
+    Returns:
+        list[list[str]]: List of direct commits
+    """
+    if remote:
+        repo = github.get_repo(repo_path)
+        output = []
+        commits = repo.get_commits()[:100]
+        direct_commits = [i for i in commits if len(i.parents) == 1]
+        direct_list = [[i.sha, i.commit.author.name, i.commit.author.date, i.commit.message] for i in direct_commits]
+
+    else:
+        repo = Repo(repo_path)
+        commits = list(repo.iter_commits())[:50]
+        direct_commits = [i for i in commits if len(i.parents) == 1]
+        direct_list = [[i.hexsha, i.author.name, i.authored_datetime, i.message] for i in direct_commits]
+
+    return direct_list
+
 

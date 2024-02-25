@@ -8,5 +8,5 @@ repo_local = "Synfig_Repo"
 repo_path = os.getcwd() + "\\" + repo_local
 Repo.clone_from(repo_url, repo_local)
 
-result = merge_extractor()repo_path, remote = False)
+result = merge_extractor(repo_path, remote = False)
 
