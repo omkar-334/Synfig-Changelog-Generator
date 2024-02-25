@@ -1,3 +1,5 @@
+#Extract only merge commits or direct commits
+
 import re
 import os
 from git import Repo
@@ -27,7 +29,7 @@ def merge_extractor(repo_path : str, remote=True):
     if remote:
         repo = github.get_repo(repo_path)
         output = []
-        commits = repo.get_commits()[:100]
+        commits = repo.get_commits()[:100]  # Select first 100 commits for faster results
         merges = [i for i in commits if 'merge' in i.commit.message.lower()]
         merge_list = [[i.sha, i.commit.author.name, i.commit.author.date, i.commit.message] for i in merges]
 
@@ -54,13 +56,13 @@ def direct_extractor(repo_path : str, remote=True):
     if remote:
         repo = github.get_repo(repo_path)
         output = []
-        commits = repo.get_commits()[:100]
+        commits = repo.get_commits()[:100]  # Select first 100 Commits for faster results
         direct_commits = [i for i in commits if len(i.parents) == 1]
         direct_list = [[i.sha, i.commit.author.name, i.commit.author.date, i.commit.message] for i in direct_commits]
 
     else:
         repo = Repo(repo_path)
-        commits = list(repo.iter_commits())[:50]
+        commits = list(repo.iter_commits())[:50]  # Select first 50 Commits for faster results
         direct_commits = [i for i in commits if len(i.parents) == 1]
         direct_list = [[i.hexsha, i.author.name, i.authored_datetime, i.message] for i in direct_commits]
 

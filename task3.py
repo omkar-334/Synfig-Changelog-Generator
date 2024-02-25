@@ -1,3 +1,5 @@
+#Extract Pull Request description using Github API (this is necessary because PR may contain images and extended information)
+
 import requests
 
 username = 'omkar-334'
@@ -10,7 +12,7 @@ url = f'https://api.github.com/repos/{owner}/{repo}/pulls'
 
 response = requests.get(url, auth=(username, token))
 
-if response.status_code == 200:
+if (sc:=response.status_code) == 200:
     pull_requests = response.json()
 
     for pr in pull_requests:
@@ -20,4 +22,4 @@ if response.status_code == 200:
         print(f"URL: {pr['html_url']}")
         print()
 else:
-    print(f"Failed to fetch pull requests. Status code: {response.status_code}")
+    print(f"Failed. Status code: {sc}")
