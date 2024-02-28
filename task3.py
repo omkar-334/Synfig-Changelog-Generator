@@ -3,12 +3,10 @@
 import requests
 
 username = 'omkar-334'
+repo_path = 'synfig/synfig'
+
+url = f'https://api.github.com/repos/{repo_path}/pulls'
 token = open('token.txt','r').read()
-
-owner = 'synfig'
-repo = 'synfig'
-
-url = f'https://api.github.com/repos/{owner}/{repo}/pulls'
 
 response = requests.get(url, auth=(username, token))
 

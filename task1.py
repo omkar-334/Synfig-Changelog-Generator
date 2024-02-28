@@ -5,17 +5,12 @@ import os
 from git import Repo
 from github import Github
 
-
-# Direct Commit - the previous commit becomes the parent of the new commit. Hence the new commit has only 1 parent.
-# Merged Commit - the new commit has previous merged commits(2 or more) as parents
-
 token = open('token.txt','r').read()
 github = Github(token)
 
-remote_path = 'synfig/synfig'
-
-folder = "Synfig_Repo"
-local_path = os.getcwd() + "\\" + folder
+# folder = "Synfig_Repo"
+# local_path = os.getcwd() + "\\" + folder
+# remote_path = 'synfig/synfig'
 
 def merge_extractor(repo_path : str, remote=True):
     """
@@ -67,5 +62,6 @@ def direct_extractor(repo_path : str, remote=True):
         direct_list = [[i.hexsha, i.author.name, i.authored_datetime, i.message] for i in direct_commits]
 
     return direct_list
+
 
 
