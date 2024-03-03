@@ -23,7 +23,6 @@ def merge_extractor(repo_path : str, remote=True):
     """
     if remote:
         repo = github.get_repo(repo_path)
-        output = []
         commits = repo.get_commits()[:100]  # Select first 100 commits for faster results
         merges = [i for i in commits if 'merge' in i.commit.message.lower()]
         merge_list = [[i.sha, i.commit.author.name, i.commit.author.date, i.commit.message] for i in merges]
