@@ -21,7 +21,7 @@ with open("SHORT_CHANGELOG.md", "w", encoding="utf-8") as file:
     for commit in output:
         author = "[" + commit[0]+"](https://github.com/" + commit[0] +")  "
         date = "#### " +commit[1].strftime('%d-%m-%Y %H:%M')
-        temp = re.split(":", commit[2])
+        temp = re.split(":", commit[2], 1)
         type = regex.search(temp[0])[0]
         icon = icondict.get(type)
         message = re.split(r"\n", temp[1])[0]
